@@ -2,10 +2,23 @@ const pokemonList = document.getElementById('pokemonList')
 const loadMoreButton = document.getElementById('loadMoreButton')
 
 const maxRecords = 151
-const limit = 10
+const limit = 12
 let offset = 0;
 
 function convertPokemonToLi(pokemon) {
+    const statsHTML = pokemon.stats.map(stat => {
+        const percent = Math.min(stat.base_stat, 100)
+        return `
+        <div class="stat">
+            <span class="stat-name">${stat.name.toUpperCase()}:</span>
+            <div class="stat-bar">
+                <div class="stat-fill" style="width: ${percent}%"></div>
+            </div>
+            <span class="stat-value">${stat.base_stat}</span>
+        </div>
+        `
+    }).join('')
+
     return `
         <li class="pokemon ${pokemon.type}">
             <span class="number">#${pokemon.number}</span>
@@ -18,6 +31,10 @@ function convertPokemonToLi(pokemon) {
 
                 <img src="${pokemon.photo}"
                      alt="${pokemon.name}">
+            </div>
+            
+            <div class="stats">
+                ${statsHTML}
             </div>
         </li>
     `
